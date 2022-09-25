@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <button class="btn">获取书籍成功之后马上添加一个书籍</button>
+  <button class="btn1">同时获取书籍和用户数据，获取完毕之后弹出 alert 提示</button>
+  <script src="https://cdn.bootcdn.net/ajax/libs/axios/0.27.2/axios.min.js"></script>
+  <script>
+    // 异步编程    
+    // ajax 请求     setTimeout   setInterval 
+
+    // const xxx = () => new Promise((resolve, reject) => {
+    //   setTimeout(() => {
+    //     resolve()
+    //   },1000)
+    // })
+
+    // xxx().then(()=> {
+    //   console.log('异步结束')
+    // })
+
+    // 使用 promise 封装原生的  ajax 请求
+    // 请求的方法，请求的地址，请求传递的参数
+    const myAjax = (method, url, data) => new Promise((resolve, reject) => {
+      const xhr = new XMLHttpRequest()
+      xhr.open(method, url)
+      if (data) {
+        xhr.setRequestHeader('Content-type', 'application/json')
+        xhr.send(JSON.stringify(data))
+      } else {
+        xhr.send()
+      }
+      xhr.onreadystatechange = () => {
+        if (xhr.status >= 200 && xhr.readyState === 4) {
+          // console.log(JSON.parse(xhr.responseText))
+          // 请求成功之后要执行 resolve 函数
+          resolve(JSON.parse(xhr.responseText))
+        }
+      }
+    })
+    // const getBooks = () => new Promise((resolve, reject) => {
+    //   const xhr = new XMLHttpRequest()
+    //   xhr.open('GET', 'http://localhost:3008/books')
+    //   xhr.send()
+    //   xhr.onreadystatechange = () => {
+    //     if (xhr.status >= 200 && xhr.readyState === 4) {
+    //       // console.log(JSON.parse(xhr.responseText))
+    //       // 请求成功之后要执行 resolve 函数
+    //       resolve(JSON.parse(xhr.responseText))
+    //     }
+    //   }
+    // })
+
+    document.querySelector('.btn').addEventListener('click', function () {
+      myAjax('GET', 'http://localhost:3008/books')
+      .then(res => {
+        console.log(res)
+        // 一个请求结束的，想要开始另一个请求，那么需要将另一个请求写在 then 参数的返回值上
+        return myAjax('POST', 'http://localhost:3008/books', {title: '新增的新的书籍'})
+      })
+      .then(res => {
+        console.log(res)
+      })
+    })
+
+    // promise 分为三个状态 
+    // pending（进行中）、fulfilled | resolve（已成功）和 rejected（已失败）
+
+    // Promise 类 的一些方法
+    // Promise.all   并发请求 等待所有请求全部结束， 如果请求全部成功的话，返回所有请求的结果，如果有请求有一个失败的话，那么结果就是这个失败的结果, 如果有失败的话就会报错
+    // Promise.race  用法跟 all 一样, 只要有一个先完成了，那么整个 race 的结果就是该请求的结果
+    // Promise.allSettled 跟 all 一样，只不过 遇到了错误请求也会正常运行，不会报错
+    // Promise.any 跟 race 一样，区别是 any 会等待一个成功的请求， 所有请求都没有成功的才会结束
+
+    document.querySelector('.btn1').addEventListener('click', () => {
+      Promise.race([myAjax('GET', 'http://localhost:3008/books') , myAjax('GET', 'http://localhost:3008/users')]).then(res => {
+        // 返回的数据是一个数组，数组里面分别是请求的所有结果
+        console.log(res)
+      })
+      // Promise.all([axios.get('http://localhost:3008/books') , axios.get('http://localhost:3008/users')])
+    })
+
+
+
+
+
+    // 类的静态方法
+    // class Cat {
+    //   constructor(name, age){
+    //     this.name = name 
+    //     this.age = age 
+    //   }
+
+    //   sayName(){
+    //     console.log(this.name)
+    //   }
+
+    //   // 静态方法属于类本身的  类的实例无法访问
+    //   static test(){
+    //     console.log('测试类的静态方法')
+    //   }
+    // }
+
+    // const cat = new Cat('小花儿', 2)
+    // console.log(cat )
+    // Cat.test()
+
+
+    // 手写 promise 
+    
+
+
+    // async  和  await   Generator 函数的语法糖
+    // async 描述函数
+    // await 等待异步  其实相当于将 await 后的异步操作变成了同步，并且返回异步请求的结果
+    // const getBooks = async () => {
+    //   // const res = await axios.get('http://localhost:3008/books')
+    //   const res = await myAjax('GET','http://localhost:3008/books')
+    //   console.log(res)
+    //   console.log(111111)
+    // }
+
+    // getBooks()
+  </script>
+</body>
+
+</html>

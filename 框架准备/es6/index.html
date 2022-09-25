@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    // let  const 
+
+    // 变量的声明提升  声明过程提升
+    // console.log(num)
+    // var num = 100
+    // let 和 const 替代 var 创建变量
+    // console.log(num)
+    // let num = 100
+    // 1. 不可重复声明
+    // 2. 无声明提升， 未创建不可使用
+    // 3. 拥有块级作用域   {} 就是作用域
+    // 4. const 用来创建常量的  就是不可变化的, 不可以修改
+    // let num1 = 100
+    // let num2 = 101
+    // if(num1 < num2) {
+    //   let a = '小于'
+    // }
+    // console.log(a)
+
+    // function fun() {
+    //   var a= 100
+    // }
+
+    // fun()
+    // console.log(a)
+
+    // const pi = 3.1415691827397
+
+    // const obj = {
+    //   name: '小张',
+    //   age: 20
+    // }
+
+    // obj.name = '小王'
+
+    // obj = {}
+
+    // console.log(obj)
+
+    // 变量的解构赋值
+    // const obj = {
+    //   username: 'xxxx',
+    //   userage: 20
+    // }
+    // let username = obj.username
+    // let userage = obj.userage
+
+    // 上述写法可以使用 结构赋值简写
+    // 变量名和对象的属性名相同的时候，也可以改名
+    // let { username: name, userage } = obj
+    // console.log(name, userage)
+
+    // let [a, b, c] = [1, 2, 3]
+    // console.log(a)
+    // console.log(b)
+    // console.log(c)
+
+    // let [x, y, z] = 'hello'
+    // console.log(x, y, z)
+
+    // 函数参数的解构赋值
+    // let { username, userage } = obj
+    // function fun({ username, userage }) {
+    //   console.log(username)
+    //   console.log(userage)
+    // }
+
+    // fun(obj)
+
+    // 模版字符串
+
+    // let name = '小张'
+    // let age = 20
+    // console.log(`我是${name}，今年${age}了`)
+
+    // BigInt  数据类型   大整数
+
+    // console.log(12836719286739128548671548172645187451745174518764518712370192874091874019827409187410924719047093742384723742083472938472093847203947239487234723497239487209384720389472089720720398472089720389702938472398203947239487234723497239487209384720389472089720720398472089720389702938472398203947239487234723497239487209384720389472089720720398472089720389702938472398203947239487234723497239487209384720389472089720720398472089720389702938472398n)
+
+    // 当数值 大于等于 2的1024次方就无法显示了，显示的是 infinity 无穷
+
+    // 函数的扩展
+
+    // 1. 函数参数的默认值
+    // function setSize(width = 100, height = 100) {
+    //   // 函数的参数相当于在函数内创建变量， 函数调用传递的实参相当于给变量赋值
+    //   // 一顿操作
+    //   // if(width === undefined){
+    //   //   width = 100
+    //   // }
+
+    //   // if(height === undefined){
+    //   //   height = 100
+    //   // }
+
+    //   console.log(width, height)
+    // }
+
+    // setSize(200)
+    // 不传递数据 默认是 100  100 怎么做
+
+
+    // 2. rest 参数   剩余参数
+
+    // function fun(a, ...rest) {
+    //   console.log(rest)
+    // }
+
+
+    // fun(1,2,3,4,5)
+
+    // 3. 箭头函数  （很重要）  就是函数换了个写法
+
+    // function fun() {
+    //   // 一顿操作
+    //   // 有返回写 没有不写 return
+    //   // return 
+    // }
+
+    // const fun = () => {
+    //   // 一顿操作
+    //   // 有返回写 没有不写 return
+    //   // return 
+    // }
+
+    // const fun1 = a => {
+    //   // 一顿操作
+    //   // 有返回写 没有不写 return
+    //   // return 
+    // }
+
+    // const fun2 = a => a 
+    // const fun3 = a => ({a: a})
+
+    // 箭头函数的写法    左侧  =>   右侧
+    // 左侧写 参数  1. () 无参    2.参数1   一个参   3. (参数1,参数2......)
+    // 右侧写函数要做的事  1. { 函数做的事 }    2. 省略{} 直接写返回值    第二种只适用于没有操作只有返回值的函数  3. 在第二种情况下 返回的是一个对象的话写成  ({})
+
+    // fun(100)
+
+
+    // const obj = {
+    //   name:'小张',
+    //   say: () => {
+    //     console.log(this)
+    //     console.log('我是' + this.name)
+    //   }
+    // }
+    // 箭头函数内的 this  一般都是 window
+    // obj.say()
+
+    // 扩展运算符
+    // const arr = [1,2,3,4,5,6]
+    // 拷贝一个新的数组
+    // const newArr = arr.slice()
+    // const newArr = [...arr]
+    // newArr.push(7)
+    // console.log(arr)
+    // console.log(newArr)
+
+    // const obj = {a: 100, b: 200}
+    // const newObj = Object.assign({}, obj)
+    // const newObj = {...obj}
+    // newObj.c = 300
+    // console.log(obj)
+    // console.log(newObj)
+
+    // 对象的扩展
+    // 1. 属性的简洁表示法
+    // const bookName = 'vue'
+    // const price = 100
+
+    // 当属性值表示的变量和属性名一致时，可以省略属性值的书写
+    // const newBook = {
+    //   bookName,
+    //   price,
+    //   say(){
+    //     console.log('测试')
+    //   }
+    // }
+
+    // console.log(newBook)
+
+    // 2. 属性名表达式
+
+    // const obj = {helloWorld: true}
+    // const txt1 = 'hello'
+    // const txt2 = 'World'
+
+    // console.log(obj[txt1 + txt2])
+
+    // Symbol 新的数据类型 表示独一无二的值
+
+    // const val = Symbol('2')
+    // console.log(val)
+
+    // 运算符的扩展
+    // 1. 链判断运算符   ?.
+    // const obj = {
+    //   a: 100,
+    //   // address: {
+    //   //   city: '秦皇岛'
+    //   // }
+    // }
+    // // const city =  obj.address.city
+    // address 可能不存在  city 也可能不存在
+    // 那么要获取 city 的话 要保证既有 address 又有 city
+    // if(obj.address && obj.address.city){}
+    // const city = obj.address?.city
+    // console.log(city)
+
+    // 2. null 判断运算符 ??
+    // const val = 0
+    // 当 val 时 null 或者 undefined 的时候 value 才会赋值为 100， 否则都是 val
+    // const value = val ?? 100
+    // 三目运算符的问号判断就是 if 语句的判断
+    // const value = val ?  val : 100
+    // console.log(value)
+
+    // set 是一种新的数据结构   有点类似数组
+    // const s = new Set()
+    // s.add(1)
+    // s.add(2)
+    // s.add(3)
+    // s.add(4)
+    // console.log(s)
+    // s.delete(4)
+    // console.log(s.size)
+    // console.log(s.has(4))
+    // 利用 set 实现数组的去重操作
+    // const arr = [1,1,1,1,1,1,21,2,1,2,12]
+    // const s = new Set(arr)
+    // console.log([...s]) 
+
+    // class 类
+
+    // function Animal(name, age) {
+    //   this.name = name 
+    //   this.age = age 
+    // }
+
+    // Animal.prototype.sayName = function () {
+    //   console.log(this.name)
+    // }
+
+    // const cat = new Animal('小花猫', 2)
+    // console.log(cat)
+    // cat.sayName()
+
+
+    // class Animal {
+    //   // constructor 就相当于 构造函数
+    //   constructor(name, age) {
+    //     this.name = name 
+    //     this.age = age 
+    //   }
+    //   // 除了 constructor 之外的方法就相当于原型内的方法
+    //   sayName(){
+    //     console.log(this.name)
+    //   }
+    // }
+
+    // const  cat = new Animal('大花猫', 3)
+    // console.log(cat)
+    // cat.sayName()
+
+    // 使用 extends 关键字继承
+    // class Cat extends Animal {
+    //   constructor(name, age){
+    //     super(name, age)
+    //   }
+    //   sing(){
+    //     console.log('喵喵喵')
+    //   }
+    // }
+
+    // const  cat = new Cat('大白',2)
+    // console.log(cat)
+    // cat.sayName()
+    // cat.sing()
+
+    // class Point {
+    //   color = 'black'
+    //   constructor(x, y) {
+    //     this.x = x
+    //     this.y = y
+    //     // 象这种 color 属性 上来就有值，我们以利用属性的新写法去写
+    //     // this.color = 'black'
+    //   }
+
+    //   // 相当于对已有的属性进行计算，一般不会被修改
+    //   // 计算属性
+    //   get reversePoint(){
+    //     return `(${this.y},${this.x})`
+    //   }
+
+    //   set reversePoint(newValue) {
+    //     console.log('reversePoint 被修改了 修改成了' + newValue)
+    //   }
+    // }
+
+    // const point = new Point(10, 20)
+    // console.log(point.reversePoint)
+    // point.reversePoint = '(100,100)'
+    // console.log(point)
+
+
+  </script>
+</body>
+
+</html>

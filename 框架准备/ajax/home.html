@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <button class="btn">获取商品数据</button>
+  <button class="btn1">新增商品数据</button>
+  <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+  <script src="./js/axios.min.js"></script>
+  <script>
+    //#region 
+    // 原生的 ajax 请求
+    // document.querySelector('.btn').addEventListener('click', function () {
+    //   var xhr = new XMLHttpRequest()
+    //   xhr.open('GET', 'http://localhost:3008/goods')
+    //   xhr.send()
+    //   xhr.onreadystatechange = function () {
+    //     if (xhr.status >= 200 && xhr.readyState == 4) {
+    //       console.log(JSON.parse(xhr.responseText))
+    //     }
+    //   }
+    // })
+
+    // document.querySelector('.btn1').addEventListener('click', function () {
+    //   var xhr = new XMLHttpRequest()
+    //   xhr.open('POST', 'http://localhost:3008/goods')
+
+    //   xhr.setRequestHeader('Content-type', 'application/json')
+
+    //   xhr.send(JSON.stringify({
+    //     "title": "4iphone 14PM",
+    //     "price": 40000
+    //   }))
+    //   xhr.onreadystatechange = function () {
+    //     if (xhr.status >= 200 && xhr.readyState == 4) {
+    //       console.log(JSON.parse(xhr.responseText))
+    //     }
+    //   }
+    // })
+    //#endregion
+
+
+    // jquery 的 ajax 请求
+    // $.get('地址',请求成功的回调函数，函数内的参数就是返回的结果)   还可以写成   $.get({})
+    // $.post()
+    // $.ajax()
+    // $('.btn').click(function () {
+    //   // $.get('http://localhost:3008/goods', function (res) {
+    //   //   console.log(res)
+    //   // })
+    //   $.get({
+    //     url: 'http://localhost:3008/goods',
+    //     success: function (res) {
+    //       console.log(res)
+    //     },
+    //     error: function () {
+    //       console.log('请求失败了')
+    //     }
+    //   })
+    // })
+
+    // $('.btn1').click(function () {
+    //   // $.post('http://localhost:3008/goods', {
+    //   //   "title": "5iphone 15PM",
+    //   //   "price": 40000
+    //   // }, function (res) {
+    //   //   console.log(res)
+    //   // })
+
+    //   $.post({
+    //     url: 'http://localhost:3008/goods',
+    //     data: {
+    //       "title": "5iphone 15PM",
+    //       "price": 40000
+    //     },
+    //     success: function (res) {
+    //       console.log(res)
+    //     }
+    //   })
+    // })
+
+    // axios 插件实现 ajax   专门的请求插件   框架基本上都使用 axios 发请求
+    document.querySelector('.btn').onclick = function () {
+      // axios 请求的结果是一个 axios 自己造的对象  该对象下的 data 属性就是后端返回的结果
+      // axios.get(地址).then(回调函数)  回到函数 请求成功之后执行，参数就是 axios 的返回结果
+      axios.get('http://localhost:3008/goods').then(function (res) {
+        console.log(res.data)
+      })
+    }
+
+    document.querySelector('.btn1').onclick = function () {
+      // axios.post('地址', 向后端传递的数据(对象)).then(回调)
+      axios.post('http://localhost:3008/goods', {title: '华为 100',price: 20000}).then(function (res) {
+        console.log(res.data)
+      })
+    }
+
+    // fetch 不常用
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <button class="btn">获取后端数据</button>
+  <button class="btn1">新增数据</button>
+  <button class="btn2">删除</button>
+  <button class="btn3">修改</button>
+  <ul class="list">
+
+  </ul>
+  <script>
+    // 原生事件绑定 给 button 绑定事件
+    // 接口 
+    // 地址: https://cnodejs.org/api/v1/topics
+    // 方法: get
+    // 参数: page   limit    tab
+    // 返回: {success: true, data: [40条]}  json 串
+    var a = document.querySelector('.btn')
+
+    // function showArticles(articles) {
+    //   articles.forEach()
+    // }
+
+    a.onclick = function () {
+      // console.log(1111)
+      // 原生 ajax 发送 get 请求
+      // 1. 创建请求对象  xhr
+      var xhr = new XMLHttpRequest()
+      // 2. 使用请求对象下的 open 方法创建请求
+      xhr.open('GET', 'http://localhost:3008/books/tg12e')
+      // 3. 使用请求对象下的 send 方法发送请求
+      xhr.send()
+      // 4. 利用 xhr 的 onreadystatechange 来监听请求的过程
+      xhr.onreadystatechange = function () {
+        // 可以监听到 状态 和 状态码
+        if (this.readyState == 4 && this.status >= 200) {
+          // 请求成功
+          // xhr.responseText  存储的是结果
+          // 后端反馈的结果一般是 json 格式，其实就是一个特殊的字符串 需要使用方法转义成对象或数组
+          // JSON.parse(json串)  将 json 串解析成对象
+          // JSON.stringfy(对象) 将对象制作成 json 串
+          console.log(JSON.parse(xhr.responseText))
+
+          // var articles = JSON.parse(xhr.responseText)
+
+          // articles.forEach(function (ele) {
+          //   // 新建 li 
+          //   // li 里面添加标题
+          //   // li 添加到页面上
+          //   var newLi = document.createElement('li')
+          //   newLi.innerHTML = ele.title
+          //   document.querySelector('.list').append(newLi)
+          // });
+
+
+          // 要求获取数据成功之后展示数据的标题到页面上
+        }
+      }
+    }
+
+
+    // 请求的方式有很多种
+    // get  post  put  patch  delete  等等
+    // 后端决定到底用哪个
+    // 最常用的两个  get  post 
+    // 一般 get 是获取数据
+    // post 一般是提交数据 
+
+
+
+    // 当我们弄好 json-server 之后 
+    // 其实后端数据接口就做好了
+    // 1. http://localhost:3008/books   get  无参  返回书籍数组
+    // 2. http://localhost:3008/books/[id]   就是后面写成 id     get   无参  返回 id 对应的书籍
+    // 3. http://localhost:3008/books   post 参数是新的书籍  返回新增的书籍
+    // 4. http://localhost:3008/books/[id]   delete  无参   返回无
+    // 5. http://localhost:3008/books/[id]   patch  无参   返回修改的结果
+
+    document.querySelector('.btn1').onclick = function () {
+      var xhr = new XMLHttpRequest()
+      xhr.open('POST', 'http://localhost:3008/books')
+      // 传递数据需要时 json 格式不能是对象类型
+      // 但是 默认 json 格式是不可以传递的
+      // 需要设置请求的请求头内容类型
+      xhr.setRequestHeader("Content-type", "application/json");
+      //  当 post 传递参数的时候需要在 send 方法内传递
+      xhr.send(JSON.stringify({title: '新增的 vue'}))
+      xhr.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status >= 200) {
+          console.log(JSON.parse(xhr.responseText))
+          
+        }
+      }
+    }
+
+    document.querySelector('.btn2').onclick = function () {
+      var xhr = new XMLHttpRequest()
+      xhr.open('DELETE', 'http://localhost:3008/books/ik90j')
+      xhr.send()
+      xhr.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status >= 200) {
+          console.log('删除成功了-----',JSON.parse(xhr.responseText))
+        }
+      }
+    }
+
+    document.querySelector('.btn3').onclick = function () {
+      var xhr = new XMLHttpRequest()
+      xhr.open('PATCH', 'http://localhost:3008/books/5t6u8')
+      xhr.setRequestHeader("Content-type", "application/json");
+      xhr.send(JSON.stringify({title: '修改的 vue'}))
+      xhr.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status >= 200) {
+          console.log('修改成功了-----',JSON.parse(xhr.responseText))
+        }
+      }
+    }
+  </script>
+</body>
+
+</html>

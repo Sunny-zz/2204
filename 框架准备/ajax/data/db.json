@@ -1,0 +1,34 @@
+{
+  "goods": [
+    {
+      "id": 1,
+      "title": "1iphone 14PM",
+      "price": 20000
+    },
+    {
+      "id": 2,
+      "title": "2iphone 14PM",
+      "price": 30000
+    },
+    {
+      "id": 3,
+      "title": "3iphone 14PM",
+      "price": 40000
+    },
+    {
+      "title": "5iphone 15PM",
+      "price": "40000",
+      "id": 4
+    },
+    {
+      "title": "5iphone 15PM",
+      "price": "40000",
+      "id": 5
+    },
+    {
+      "title": "华为 100",
+      "price": 20000,
+      "id": 6
+    }
+  ]
+}
