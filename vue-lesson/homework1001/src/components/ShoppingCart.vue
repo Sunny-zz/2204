@@ -18,14 +18,14 @@
         <span>{{ item.goodsCount }}</span>
         <button @click="add(item)">+</button>
       </div>
-      <span>{{ item.goodsCount * item.goodsPrice }}</span>
+      <span>{{ item.goodsCount * item.goodsPrice | formatNum(30) }}</span>
       <button @click="del(item.id)">删除</button>
     </div>
     <div class="cart-bottom">
       <input v-model="isAllChecked" type="checkbox">
       <button @click="delCheckedGoods">删除选中的商品</button>
       <span>已选 {{totalNum}} 件</span>
-      <span>总价: {{total}} </span>
+      <span>总价: {{total | formatNum(20)}} </span>
     </div>
   </div>
 </template>
@@ -74,11 +74,19 @@ export default {
       ],
       // 已选商品总数以及总价并不需要单独设置 data，因为可以通过 goods 这个数组一些列的运算得到
       // 可以将运算写到 methods 的函数内，然后返回，在 template 中使用
-
       // vue 中提供了 计算属性的 知识点，就是用来 对原有的 data 进行运算，得到想要的结果
 
     };
   },
+  // 过滤器
+  // 局部过滤器(组件内的)  
+  // 用法是 在 template 中  {{ 参数 | 过滤器}}
+  // filters: {
+  //   formatNum(number){
+  //     return number.toFixed(2)
+  //   }
+  // },
+  // 全局过滤器 需要写在 main.js 中，或者写到对应文件中引入到 main.js
   // 计算属性  就相当于一个特殊的 data
   // 写法是一个函数需要返回一值，这个值就是计算属性的结果
   computed: {
@@ -112,7 +120,7 @@ export default {
       },
       set(newValue){
         // 当计算属性被修改时  会执行的  newValue 是修改之后的值
-        console.log(newValue)
+        // console.log(newValue)
         // 要根据修改的结果去修改对应的 data
         this.goods.forEach(ele => {
           ele.isCheck = newValue

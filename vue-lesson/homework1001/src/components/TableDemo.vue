@@ -1,9 +1,12 @@
 <template>
   <div>
     <div class="table-search">
-      <input ref="search" type="text" />
-      <button @click="search">搜索</button>
-      <button @click="addBook">添加</button>
+      <div v-html="'<span>123</span>'"></div>
+      <template v-if="true">
+        <input ref="search" type="text" />
+        <button @click="search">搜索</button>
+        <button @click="addBook">添加</button>
+      </template>
     </div>
     <table>
       <thead>

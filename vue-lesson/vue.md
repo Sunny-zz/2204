@@ -74,6 +74,21 @@ template 只能有一个子级
 
 事件的特殊些写法
 
+事件修饰符
+stop
+self
+once 只触发一次
+
+```html
+  <div @click.stop="xx"></div>
+```
+
+键盘事件
+```html
+  <input type='text' @keyup.enter='x'>
+```
+
+
 
 ## style 与  class 的绑定
 就是样式的绑定处理 行内 style  以及 class
@@ -92,6 +107,87 @@ v-for
 
 ## 表单输入绑定
 v-model   v-model 是 input 事件以及 value 属性的简化
+
+## 计算属性
+当页面的某个变化，是可以由当前定义好的 data 来计算出来的，那么并不需要单独在定义 data，而是定义一个计算属性
+计算属性写法:
+```js
+  export default {
+    computed: {
+      total(){
+        // 咔咔计算
+        return 计算结果
+      }
+    }
+  }
+```
+使用给的时候直接当做 data 使用即可
+计算属性默认是不允许修改的，如果想要修改的话需要设置 get 和 set
+计算属性写法:
+```js
+  export default {
+    computed: {
+      isAllChecked: {
+        get(){
+          // 咔咔计算
+          return 计算结果
+        },
+        set(newValue){
+          // 当修改计算属性 isAllChecked 时这个 set 会触发 newValue 表示的就是新的修改结果
+          // 在这个 set 中要根据修改的计算属性结果，去修改计算属性的来源数据
+        }
+      }
+    }
+  }
+```
+
+## ref
+vue 中 提供的一种获取原生 dom 节点的方法
+
+```html
+  <template>
+    <span ref='x'>啊哈哈哈</span>
+  </template>
+```
+
+```js
+  export default {
+    methods: {
+      handleClick() {
+        this.$refs.x   // 获取 span 的真实 dom 节点 就相当于 document.querySelector('span')
+      }
+    }
+  }
+```
+需要注意的是当 ref 写在了循环里面，需要将 ref 的值写成不同的，并且获取的时候得到的是数组 需要加  [0]  才能获取到真实 dom 节点  `this.$refs.xx[0]`
+使用 ref 的地方并不是很多， 获取输入框的内容，输入框的焦点设置
+
+## nextTick
+有些时候修改 data 之后，就希望马上获取或者使用该 data 对应的真实 dom 节点做一些操作。往往这个操作会失败。因为有可能在操作的时候更新后的真实 dom 节点，还没有再页面中渲染完毕。
+nextTick 的作用是等待页面中的需要渲染的节点，渲染完毕之后，才会执行
+```js
+  this.$nextTick(() => {
+    // 渲染完毕之后再执行的
+  })
+```
+可以使用 setTimeout 替代
+
+## set
+当我们定义了数组或者对象形式的 data，想要修改的时候，某些方式的修改不起作用，也就是页面不会响应变化。比如 数组的下表方式修改 arr[1] = xxx,对象的属性新增和删除
+此时就可以使用 vue 提供的 set 方法来修改
+```js
+  this.$set(数组或者对象, 属性名或者下标, 修改的值)
+  // 例如 arr = [1,2,3,4]   arr[2] = 5 --->  this.$set(arr, 2, 5)     arr=[1,2,5,4]
+  // 例如 obj = {a: 10}    obj.b= 20 --->  this.$set(obj, b, 20)      obj = {a: 10, b: 20}
+```
+当数据是对象的话，删除和添加修改无效，可以选择重新赋值， 数组也是一样
+
+
+
+
+
+
+
 
 ## 虚拟 dom
 之前的原生以及 jquery 开发，直接操作 dom ，会频繁引起浏览器的重绘， 很影响性能。
