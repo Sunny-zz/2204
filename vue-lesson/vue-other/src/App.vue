@@ -66,6 +66,18 @@
     <br>
     <hr>
     <MixinsDemo />
+    <br>
+    <br>
+    <hr>
+    <PluginsDemo />
+    <br>
+    <br>
+    <hr>
+    <RenderComponent />
+    <br>
+    <br>
+    <hr>
+    <FunctionComponent :list='list'  />
   </div>
 </template>
 
@@ -74,14 +86,17 @@ import CustomDirective from './components/CustomDirective.vue';
 import DialogDemo from "./components/DialogDemo.vue";
 import DynamicComponent from './components/dynamicComponent/DynamicComponent.vue';
 import EdgeCase from './components/EdgeCase.vue';
+import FunctionComponent from './components/FunctionComponent.vue';
 import ListDemo from './components/ListDemo.vue';
 import MixinsDemo from './components/MixinsDemo.vue';
+import PluginsDemo from './components/PluginsDemo.vue';
 import BigDemo from './components/provideInjectDemo/BigDemo.vue';
+import RenderComponent from './components/RenderComponent.vue';
 import ScopeSlotDemo from './components/ScopeSlotDemo.vue';
 import TransitionDemo from './components/TransitionDemo.vue';
 import TreeDemo from './components/TreeDemo.vue';
 export default {
-  components: { DialogDemo, ScopeSlotDemo, ListDemo, DynamicComponent, TransitionDemo, EdgeCase, BigDemo, TreeDemo, CustomDirective, MixinsDemo },
+  components: { DialogDemo, ScopeSlotDemo, ListDemo, DynamicComponent, TransitionDemo, EdgeCase, BigDemo, TreeDemo, CustomDirective, MixinsDemo, PluginsDemo, RenderComponent, FunctionComponent },
   data() {
     return {
       show: false,

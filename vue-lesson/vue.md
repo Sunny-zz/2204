@@ -243,6 +243,26 @@ nextTick 的作用是等待页面中的需要渲染的节点，渲染完毕之�
 
 - 插槽
 
+- .sync 修饰符
+
+- provide inject
+
+- 组件的 ref, $parent 
+
+
+## 动态组件
+
+## 自定义指令
+
+## 组件递归
+
+## 混入  mixins
+
+## 过渡和动画
+transtion  transtion-group
+
+
+
 
 ## 虚拟 dom
 之前的原生以及 jquery 开发，直接操作 dom ，会频繁引起浏览器的重绘， 很影响性能。
