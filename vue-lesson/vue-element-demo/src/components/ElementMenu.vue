@@ -20,7 +20,12 @@
       <el-menu-item index="3"><span slot="title">导航三</span></el-menu-item>
       <el-menu-item index="4"><span slot="title">导航四</span></el-menu-item>
     </el-menu> -->
-    <MenuItem :menuData="menu" />
+    <el-menu class="el-menu-vertical-demo"
+      background-color="#545c64"
+      text-color="#fff"
+      active-text-color="#ffd04b">
+      <MenuItem :menuData="menu" />
+    </el-menu>
   </div>
 </template>
 
@@ -71,10 +76,8 @@ export default {
 
 <style scoped>
 .menu-wrap {
-  width: 160px;
+  width: 210px;
   margin-left: 200px;
 }
-.el-submenu .el-menu-item {
-  min-width: 0;
-}
+
 </style>

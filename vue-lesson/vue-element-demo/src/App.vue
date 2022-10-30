@@ -24,15 +24,27 @@
 
       <el-button type="primary" @click="showTip">提示信息</el-button>
       <el-divider content-position="center">分割线</el-divider>
-      <ElementMenu/>
+      <ElementMenu />
+      <el-divider content-position="center">分割线</el-divider>
+      <PostsDemo />
+      <el-divider content-position="center">分割线</el-divider>
+      <InfiniteScrollDemo />
+      <el-divider content-position="center">分割线</el-divider>
+      <CssDemo />
+      <el-divider content-position="center">分割线</el-divider>
+      <SwiperDemo />
     </div>
   </div>
 </template>
 
 <script>
-import ElementMenu from './components/ElementMenu.vue';
+import CssDemo from './components/CssDemo.vue';
+import ElementMenu from "./components/ElementMenu.vue";
+import InfiniteScrollDemo from "./components/InfiniteScrollDemo.vue";
+import PostsDemo from "./components/PostsDemo.vue";
+import SwiperDemo from './components/SwiperDemo.vue';
 export default {
-  components: { ElementMenu },
+  components: { ElementMenu, PostsDemo, InfiniteScrollDemo, CssDemo, SwiperDemo },
   name: "app",
   data() {
     return {
@@ -56,7 +68,7 @@ export default {
 };
 </script>
 
-<style >
+<style scoped>
 #app {
   font-family: "Avenir", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -74,5 +86,4 @@ export default {
   height: 300px;
   background-color: #ccc;
 }
-
 </style>

@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import { Button, Link,Rate,Loading,Message,Menu,MenuItem,MenuItemGroup,Submenu,Divider } from 'element-ui'
+import { Button, Link,Rate,Loading,Message,Menu,MenuItem,MenuItemGroup,Submenu,Divider,Pagination,InfiniteScroll } from 'element-ui'
 
 Vue.use(Button)
 Vue.use(Link)
@@ -9,9 +9,11 @@ Vue.use(MenuItem)
 Vue.use(MenuItemGroup)
 Vue.use(Submenu)
 Vue.use(Divider)
+Vue.use(Pagination)
 
 // 全局指令
 Vue.use(Loading)
+Vue.use(InfiniteScroll)
 
 
 // Vue.prototype
