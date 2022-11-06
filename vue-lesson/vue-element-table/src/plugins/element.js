@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import { Button, Table, TableColumn,Select,Option,Input,Rate,Tag,Notification,Popconfirm,Popover,Dialog,Form,FormItem,DatePicker} from 'element-ui'
+import { Button, Table, TableColumn,Select,Option,Input,Rate,Tag,Notification,Popconfirm,Popover,Dialog,Form,FormItem,DatePicker,Loading} from 'element-ui'
 
 Vue.use(Button)
 Vue.use(Table)
@@ -15,6 +15,8 @@ Vue.use(Dialog)
 Vue.use(Form)
 Vue.use(FormItem)
 Vue.use(DatePicker)
+
+Vue.use(Loading)
 
 
 Vue.prototype.$notify = Notification

@@ -22,12 +22,14 @@
       <el-button type="primary" icon="el-icon-search" @click="search"
         >搜索</el-button
       >
-      <el-button type="primary" icon="el-icon-edit">添加</el-button>
+      <el-button type="primary" icon="el-icon-edit" @click="open"
+        >添加</el-button
+      >
     </div>
     <br />
     <br />
     <div class="table-content">
-      <el-table :data="showData" border style="width: 100%">
+      <el-table :data="showData" border style="width: 100%" v-loading='loading'>
         <el-table-column prop="id" label="序号" width="80"> </el-table-column>
         <el-table-column prop="time" label="时间" width="180">
         </el-table-column>
@@ -60,7 +62,9 @@
         </el-table-column>
         <el-table-column label="操作" width="210">
           <template v-slot="{ row }">
-            <el-button size="mini" type="primary">编辑</el-button>
+            <el-button size="mini" type="primary" @click="open(row)"
+              >编辑</el-button
+            >
             <el-button
               v-if="row.status !== 'published'"
               size="mini"
@@ -84,12 +88,22 @@
           </template>
         </el-table-column>
       </el-table>
-      <el-dialog title="create" :visible.sync="dialogFormVisible">
-        <el-form :model="data" label-position='right' label-width="80px">
-          <el-form-item label="类型">
+      <el-dialog
+        :title="dialogTitle"
+        :visible="dialogFormVisible"
+        @close="close"
+      >
+        <el-form
+          :rules="rules"
+          :model="data"
+          ref="myForm"
+          label-position="right"
+          label-width="80px"
+        >
+          <el-form-item label="类型" prop="countory">
             <el-select v-model="data.countory" placeholder="Please select">
               <el-option
-                v-for="item in countorys"
+                v-for="item in countorysOther"
                 :key="item"
                 :label="item"
                 :value="item"
@@ -97,16 +111,20 @@
               </el-option>
             </el-select>
           </el-form-item>
-          <el-form-item label="时间">
+          <el-form-item label="时间" prop="time">
             <el-date-picker
               v-model="data.time"
               type="datetime"
               placeholder="选择日期时间"
+              value-format="yyyy-MM-dd HH:mm:ss"
             >
             </el-date-picker>
           </el-form-item>
-          <el-form-item label="标题">
+          <el-form-item label="标题" prop="title">
             <el-input v-model="data.title"></el-input>
+          </el-form-item>
+          <el-form-item label="作者" prop="author">
+            <el-input v-model="data.author"></el-input>
           </el-form-item>
           <el-form-item label="状态">
             <el-select v-model="data.status" placeholder="请选择活动区域">
@@ -116,7 +134,7 @@
           </el-form-item>
           <el-form-item label="重要性">
             <el-rate
-              :value="data.importance"
+              v-model="data.importance"
               :max="3"
               :colors="[
                 'rgb(57, 56, 56)',
@@ -128,10 +146,8 @@
           </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
-          <el-button @click="dialogFormVisible = false">取 消</el-button>
-          <el-button type="primary" @click="dialogFormVisible = false"
-            >确 定</el-button
-          >
+          <el-button @click="close">取 消</el-button>
+          <el-button type="primary" @click="ok">确 定</el-button>
         </div>
       </el-dialog>
     </div>
@@ -140,12 +156,14 @@
 
 
 <script>
+import moment from "moment";
 export default {
   data() {
     return {
       searchText: "",
       searchImportance: "",
       countorys: ["China(CN)", "USA(US)", "Japan(JP)", "Eurozone(EU)"],
+      countorysOther: ["China", "USA", "Japan", "Eurozone"],
       searchCountory: "",
       tableData: [],
       // 点击搜索才会改变的
@@ -154,7 +172,7 @@ export default {
         searchImportance: "",
         searchCountory: "",
       },
-      dialogFormVisible: true,
+      dialogFormVisible: false,
       data: {
         time: "",
         title: "",
@@ -164,6 +182,14 @@ export default {
         visitCount: 300,
         status: "published",
       },
+      rules: {
+        countory: [{ required: true, message: "请输入类别", trigger: "blur" }],
+        time: [{ required: true, message: "请输入时间", trigger: "change" }],
+        title: [{ required: true, message: "请输入标题", trigger: "blur" }],
+        author: [{ required: true, message: "请输入作者", trigger: "blur" }],
+      },
+      dialogTitle: "create",
+      loading: false
     };
   },
   computed: {
@@ -186,17 +212,24 @@ export default {
     this.tableData = res;
   },
   methods: {
-    // 删除
-    del(id) {
+    // 删除 
+    async del(id) {
+      this.loading = true
+      await this.$http.delete(`/book/${id}`)
       this.tableData = this.tableData.filter((ele) => ele.id !== id);
+      this.loading = false
       this.$notify({
         title: "成功",
         message: "删除成功",
         type: "success",
         duration: 1000,
       });
+
     },
-    changeStatus(id, newStatus) {
+    async changeStatus(id, newStatus) {
+      this.loading = true
+      await this.$http.patch(`/book/${id}`, {status: newStatus})
+      this.loading = false
       this.tableData.find((ele) => ele.id === id).status = newStatus;
     },
     search() {
@@ -206,6 +239,57 @@ export default {
         searchImportance,
         searchCountory,
       };
+    },
+    open(data) {
+      // 如果没有传递 data 的话默认 data 是事件对象，判断的时候需要注意
+      this.dialogFormVisible = true;
+      // 要判断是添加弹窗还是编辑弹窗
+      if (data.id) {
+        // 编辑
+        this.dialogTitle = "edit";
+        // console.log(data);
+        // 修改的时候 如果直接赋值的话  v-model 修改 data 的时候原数据也会跟着变化，这样是不对的，需要点击确定才改变 
+        this.data = {...data};
+      } else {
+        this.dialogTitle = "create";
+        // 做添加功能时 获取当前时间展示在表格的日期组件中
+        // console.log(moment().format('YYYY-MM-DD HH:mm:ss'))
+        this.data.time = moment().format("YYYY-MM-DD HH:mm:ss");
+      }
+    },
+    close() {
+      this.dialogFormVisible = false;
+      this.data = {
+        title: "",
+        countory: "",
+        author: "",
+        importance: 1,
+        visitCount: 300,
+        status: "published",
+        // 时间不要修改 一旦修改了就会触发校验，关闭的时候没有必须要校验
+        time: this.data.time,
+      };
+    },
+    ok() {
+      // vue 的 js 内最外层函数可以写成普通函数，内层必须都是箭头函数，才能获取 this
+      this.$refs.myForm.validate((res) => {
+        if (res) {
+          // 验证成功 添加还是编辑需要判断
+          // this.data.id       this.dialogTitle
+          const {id} = this.data
+          if (id) {
+            let currentDataIndex = this.tableData.findIndex(ele => ele.id === id) 
+            this.tableData.splice(currentDataIndex, 1, this.data)
+          } else {
+            this.tableData.push({
+              ...this.data,
+              id: this.tableData[this.tableData.length - 1].id + 1,
+            });
+          }
+
+          this.close();
+        }
+      });
     },
   },
 };
@@ -228,5 +312,4 @@ export default {
   margin-right: 0;
   font-size: 20px;
 }
-
 </style>
