@@ -272,19 +272,23 @@ export default {
     },
     ok() {
       // vue 的 js 内最外层函数可以写成普通函数，内层必须都是箭头函数，才能获取 this
-      this.$refs.myForm.validate((res) => {
+      this.$refs.myForm.validate(async (res) => {
         if (res) {
           // 验证成功 添加还是编辑需要判断
           // this.data.id       this.dialogTitle
           const {id} = this.data
           if (id) {
+            await this.$http.patch(`/book/${id}`, this.data)
             let currentDataIndex = this.tableData.findIndex(ele => ele.id === id) 
             this.tableData.splice(currentDataIndex, 1, this.data)
           } else {
-            this.tableData.push({
-              ...this.data,
-              id: this.tableData[this.tableData.length - 1].id + 1,
-            });
+            const newBook = await this.$http.post(`/book`,this.data)
+            // console.log(newBook)
+            this.tableData.push(newBook)
+            // this.tableData.push({
+            //   ...this.data,
+            //   id: this.tableData[this.tableData.length - 1].id + 1,
+            // });
           }
 
           this.close();
