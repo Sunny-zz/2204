@@ -29,13 +29,13 @@ const routes = [
         children: [
           {
             path: '',
-            component: () => import('../views/PostListView.vue'),
+            component: () => import('../views/PostListViewOther.vue'),
             name: 'home',
           },
           {
             // localhost:8080/list/goods
             path: 'list/:tab',
-            component: () => import('../views/PostListView.vue'),
+            component: () => import('../views/PostListViewOther.vue'),
             props: true
           }
         ]

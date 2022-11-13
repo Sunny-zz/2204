@@ -17,5 +17,7 @@ instance.interceptors.response.use((res) => {
   return res.data
 })
 
+// 取消请求
+
 Vue.prototype.$http = instance
 // export default instance

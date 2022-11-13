@@ -7,21 +7,15 @@
         }}</router-link>
       </li>
     </ul>
-
-    <!-- 分页器 -->
-    <el-pagination
-      background
-      layout="prev, pager, next"
-      :current-page.sync="page"
-      :total="total"
-      :page-size="40"
-      @current-change="pageChange"
-    >
-    </el-pagination>
   </div>
 </template>
 
 <script>
+import {
+  getDocumentHeight,
+  getWindowScrollHeight,
+  getWindowScrollTop,
+} from "../utils/scroll";
 export default {
   props: ["tab"],
   data() {
@@ -54,6 +48,7 @@ export default {
           total: 280,
         },
       ],
+      loading: false,
     };
   },
   computed: {
@@ -63,42 +58,47 @@ export default {
     },
   },
 
-  // 先选择 第5页，然后查看一篇文章，再点击返回 还要看 5 
+  // 先选择 第5页，然后查看一篇文章，再点击返回 还要看 5
   // 除了上面流程 只要进入到列表页 默认展示的就是 第一页
   watch: {
     tab: {
       async handler(newValue) {
-        const page = sessionStorage.getItem('page') || 1
-        const tab = sessionStorage.getItem('tab') || 'all'
-        // console.log(tab, this.tab ? this.tab : 'all')
-        this.page = tab === (this.tab ? this.tab : 'all') ? page*1 : 1
         const res = await this.$http.get(
-          `/topics?tab=${newValue ? newValue : "all"}&page=${this.page}`
+          `/topics?tab=${newValue ? newValue : "all"}`
         );
-        // console.log(res.data)
         this.posts = res.data;
       },
       immediate: true,
     },
   },
-  // async created() {
-  //   const { tab } = this;
-  //   const res = await this.$http.get(`/topics?tab=${tab ? tab : "all"}`);
-  //   // console.log(res.data)
-  //   this.posts = res.data;
-  // },
+  mounted() {
+    window.addEventListener("scroll", this.load);
+  },
   methods: {
-    async pageChange(page) {
-      // console.log(page)
-      const tab = this.tab ? this.tab : "all"
-      sessionStorage.setItem('page', page)
-      sessionStorage.setItem('tab', tab)
-      const res = await this.$http.get(
-        `/topics?tab=${tab}&page=${page}`
-      );
-      // console.log(res.data)
-      this.posts = res.data;
+    async load() {
+      if (this.posts.length) {
+        const scrollBottom =
+          getDocumentHeight() - getWindowScrollHeight() - getWindowScrollTop();
+        if (scrollBottom <= 20) {
+          if (!this.loading) {
+            console.log("加载中");
+            this.loading = true;
+            this.page++;
+
+            const res = await this.$http.get(
+              `/topics?tab=${this.tab ? this.tab : "all"}&page=${this.page}`
+            );
+            console.log("加载完毕");
+            this.loading = false;
+            this.posts = [...this.posts, ...res.data];
+          }
+        }
+      }
     },
+  },
+
+  destroyed() {
+    window.removeEventListener("scroll", this.load);
   },
 };
 </script>
