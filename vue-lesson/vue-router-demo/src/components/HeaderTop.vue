@@ -5,14 +5,25 @@
       <router-link :to="{name: 'home'}">
         <img width="100" src="https://static2.cnodejs.org/public/images/cnodejs_light.svg" alt="">
       </router-link>
-      <!-- <el-button  type='primary'>退出</el-button> -->
+      <el-button  type='primary' @click="logout">退出</el-button>
     </div>
   </div>
 </template>
 
 <script>
 export default {
-
+  data() {
+    return {
+      userInfo: null
+    }
+  },
+  methods: {
+    logout() {
+      this.$router.push('/login')
+      sessionStorage.removeItem('token')
+      sessionStorage.removeItem('userInfo')
+    }
+  },
 }
 </script>
 

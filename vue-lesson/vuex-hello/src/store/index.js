@@ -1,46 +1,60 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-
+import http from '../plugins/http'
 Vue.use(Vuex)
 
-export default new Vuex.Store({
-  // state 就是 store 中存 公共数据的地方
+const store = new Vuex.Store({
   state: {
-    count: 10,
-    arr: [1,2,3,4,5],
-    userInfo: null
+    todos: []
   },
   mutations: {
-    // mutation 函数会自动接收 state 作为参数， 内部直接修改即可
-    add(state){
-      state.count ++
+    getTodos(state, todos){
+      state.todos = todos
     },
-    getUserInfo(state, userInfo){
-      state.userInfo = userInfo
+    delTodo(state, id){
+      state.todos = state.todos.filter(todo => todo.id !== id)
+    },
+    addTodo(state, newTodo){
+      state.todos.push(newTodo)
+    },
+    changeTodoStatus(state, {id , newStatus}){
+      console.log(id , newStatus)
+      const todo = state.todos.find(todo => todo.id === id)
+      console.log(todo)
+      todo.done = newStatus
     }
   },
-  // 异步操作写在 actions 内，异步结束之后在执行对应的 mutation
-  // action 函数接收 context 作为参数
-  // context 是一个对象内有 commit 方法
   actions: {
-    getUserInfo(context){
-      setTimeout(() => {
-        const userInfo = {username: 'x', userage: 20}
-        context.commit('getUserInfo', userInfo)
-      }, 1000)
-    }
-  },
-  // store 中的计算属性
-  getters: {
-    total(state){
-      return state.arr.reduce((res , ele) => res+=ele, 0)
+    async getTodos({commit}){
+      const res = await http.get('/todos')
+      commit('getTodos', res)
+    },
+    async delTodo({commit} , id){
+      await http.delete(`/todos/${id}`)
+      commit('delTodo', id)
+    },
+    async addTodo({commit}, newTodo){
+      const res = await http.post('/todos', newTodo)
+      console.log('添加成功')
+      commit('addTodo', res)
+    },
+    // action 函数直接接受两个参数 第一个是 context 第二个是用户自定义的
+    async changeTodoStatus({commit}, {id, newStatus}){
+      // console.log(id)
+      // console.log(newStatus)
+      await http.patch(`/todos/${id}`, {done: newStatus})
+      commit('changeTodoStatus',{ id , newStatus})
     }
   }
 })
 
-// 组件如何获取 store 数据
-// 组件内可以使用 this.$store.state  获取 state
-// 一般是将 state 获取之后写成组件的计算属性 
+// delete   /todos/:id
+// 没返回
 
-// 组件中想要修改 store 数据的话，需要先在 store 的 mutations 内定义修改的函数
-// 然后在组件内使用 this.$store.commit('对应的 mutation 函数') 来修改
+
+// post  '/todos'    {text, done}
+// 返回新添加的 todo 
+
+// patch  /todos/:id    {done: value}
+// 返回修改后的 todo
+export default store

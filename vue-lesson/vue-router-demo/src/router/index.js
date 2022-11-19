@@ -97,8 +97,8 @@ router.beforeEach((to, from, next) => {
   // next 是放行的方法 
   // console.log(to)
   // console.log(from)
-  const isLogin = sessionStorage.getItem('isLogin') === 'true'
-  if (to.path === '/login' || isLogin) {
+  const token = sessionStorage.getItem('token')
+  if (to.path === '/login' || token) {
     next()
   } else {
     next('/login')

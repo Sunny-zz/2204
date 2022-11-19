@@ -9,3 +9,13 @@ new Vue({
   render: h => h(App)
 }).$mount('#app')
 
+
+
+// vuex 
+// 创建
+// store    new Vuex.Store({})   main.js 
+
+// state, mutation, action  getters
+
+// this.$store.get
+
