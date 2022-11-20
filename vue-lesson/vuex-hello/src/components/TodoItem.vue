@@ -5,7 +5,14 @@
       <span @dblclick="edit" class="text">{{ text }}</span>
       <span @click="del">×</span>
     </div>
-    <input ref="myInp" :value="text" class="todo-input" @blur="handleBlur" v-else type="text" />
+    <input
+      ref="myInp"
+      :value="text"
+      class="todo-input"
+      @blur="handleBlur"
+      v-else
+      type="text"
+    />
   </div>
 </template>
 
@@ -15,28 +22,36 @@ export default {
   props: ["id", "text", "done"],
   data() {
     return {
-      isEditing: false
-    }
+      isEditing: false,
+    };
   },
   methods: {
-    ...mapActions(["delTodo", "changeTodoStatus"]),
+    ...mapActions(["delTodo", "changeTodoStatus", "changeTodoText"]),
     del() {
       this.delTodo(this.id);
     },
     change(event) {
       // console.log(event.target.checked)
-      this.changeTodoStatus({id: this.id, newStatus: event.target.checked});
+      this.changeTodoStatus({ id: this.id, newStatus: event.target.checked });
     },
-    edit(){
-      this.isEditing = true 
+    edit() {
+      this.isEditing = true;
       this.$nextTick(() => {
-        this.$refs.myInp.focus()
-      })
+        this.$refs.myInp.focus();
+      });
     },
-    handleBlur(event){
-      this.isEditing = false
-      console.log(event.target.value)
-    }
+    handleBlur(event) {
+      const text = event.target.value;
+      const {id} = this
+      if (text.trim()) {
+        if (event.target.value !== this.text) {
+          this.changeTodoText({id, text})
+        }
+        this.isEditing = false;
+      }else{
+        this.delTodo(id) 
+      }
+    },
   },
 };
 </script>

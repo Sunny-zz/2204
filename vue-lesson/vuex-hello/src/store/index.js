@@ -1,50 +1,24 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import http from '../plugins/http'
+
+import todos from './modules/todos'
+import showType from './modules/type'
 Vue.use(Vuex)
 
 const store = new Vuex.Store({
   state: {
-    todos: []
+    count: 100
   },
-  mutations: {
-    getTodos(state, todos){
-      state.todos = todos
-    },
-    delTodo(state, id){
-      state.todos = state.todos.filter(todo => todo.id !== id)
-    },
-    addTodo(state, newTodo){
-      state.todos.push(newTodo)
-    },
-    changeTodoStatus(state, {id , newStatus}){
-      console.log(id , newStatus)
-      const todo = state.todos.find(todo => todo.id === id)
-      console.log(todo)
-      todo.done = newStatus
-    }
+  modules: {
+    type: showType,
+    todos: todos
   },
-  actions: {
-    async getTodos({commit}){
-      const res = await http.get('/todos')
-      commit('getTodos', res)
+  getters: {
+    showTodos(state) {
+      // console.log(state)
+      const { todos, type } = state
+      return todos.todos.filter(todo => type.type === 'all' ? true : type.type === 'active' ? !todo.done : todo.done)
     },
-    async delTodo({commit} , id){
-      await http.delete(`/todos/${id}`)
-      commit('delTodo', id)
-    },
-    async addTodo({commit}, newTodo){
-      const res = await http.post('/todos', newTodo)
-      console.log('添加成功')
-      commit('addTodo', res)
-    },
-    // action 函数直接接受两个参数 第一个是 context 第二个是用户自定义的
-    async changeTodoStatus({commit}, {id, newStatus}){
-      // console.log(id)
-      // console.log(newStatus)
-      await http.patch(`/todos/${id}`, {done: newStatus})
-      commit('changeTodoStatus',{ id , newStatus})
-    }
   }
 })
 

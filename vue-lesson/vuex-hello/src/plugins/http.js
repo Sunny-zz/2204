@@ -1,5 +1,5 @@
 import axios from 'axios'
-import Vue from 'vue'
+// import Vue from 'vue'
 
 const instance = axios.create({
   baseURL:'http://localhost:3008',
@@ -20,4 +20,5 @@ instance.interceptors.response.use((res) => {
 // 取消请求
 
 // Vue.prototype.$http = instance
+
 export default instance

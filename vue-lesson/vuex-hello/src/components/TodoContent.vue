@@ -1,15 +1,15 @@
 <template>
   <div>
-    <TodoItem v-for="todo in todos" :key="todo.id" v-bind="todo" />
+    <TodoItem v-for="todo in showTodos" :key="todo.id" v-bind="todo" />
   </div>
 </template>
 
 <script>
+import { mapGetters, mapActions } from 'vuex'
 import TodoItem from './TodoItem.vue'
 // 辅助函数
 // 1. mapState  获取 state
 // 2. mapActions 获取 action 函数
-import {mapState, mapActions} from 'vuex'
 export default {
   components: { TodoItem },
   computed: {
@@ -21,7 +21,8 @@ export default {
     //   // todos: state => state.todos
     //   todos: 'todos'
     // }),
-    ...mapState(['todos'])
+    // ...mapState(['todos']),
+    ...mapGetters(['showTodos'])
   },
   created () {
     // this.$store.dispatch('getTodos')
@@ -30,9 +31,9 @@ export default {
   methods: {
     ...mapActions(['getTodos']),
     // 换名字
-    ...mapActions({
-      getTo: 'getTodos'
-    })
+    // ...mapActions({
+    //   getTo: 'getTodos'
+    // })
   },
 }
 
